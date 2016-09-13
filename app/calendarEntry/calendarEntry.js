@@ -59,7 +59,7 @@
         $scope.calendarEntries = calendarEntryList;
         $scope.addProgram = function () {
             console.log($scope.program);
-            var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
+            var ref = new Firebase("https://viridian-49902.firebaseio.com");
             var cEntries = ref.child("calendarEntries");
             cEntries.push($scope.program);
             console.log($scope.program);
