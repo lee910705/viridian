@@ -10,8 +10,10 @@
           var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
           // Attach an asynchronous callback to read the data at our posts reference
           ref.on("value", function (snapshot) {
+              
               console.log(snapshot.val());
               console.log(angular.toJson(snapshot.val()));
+              return snapshot.val();
           }, function (errorObject) {
               console.log("The read failed: " + errorObject.code);
           });
