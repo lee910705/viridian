@@ -4,9 +4,9 @@
   var app = angular.module('myApp.calendar', ['ngRoute', 'firebase.utils', 'firebase']);
 
   app.controller('CalendarCtrl', ['$scope', function ($scope) {
+      $scope.jsonHeatMap = {};
       $scope.getData = function () {
           var objectHeatMap = {};
-          console.log("Getting data");
           // Get a database reference to our posts
           var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
           // Attach an asynchronous callback to read the data at our posts reference
@@ -42,7 +42,10 @@
                   }
 
               });
-              return angular.toJson(objectHeatMap));
+             
+              $scope.jsonHeatMap = angular.toJson(objectHeatMap);
+              console.log($scope.jsonHeatMap);
+
           }, function (errorObject) {
               console.log("The read failed: " + errorObject.code);
           });
@@ -65,7 +68,10 @@
           });
           return max;
       }
-
+      var init = function () {
+          $scope.getData();
+      }
+      init();
     }]);
 
   app.factory('calendarList', ['fbutil', '$firebaseArray', function(fbutil, $firebaseArray) {
