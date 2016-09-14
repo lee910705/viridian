@@ -656,3 +656,73 @@
 [info] Public Directory: app
 [info] 
 [info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\nodejs\node.exe C:\Users\Jae Joon\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     win32
+[debug] Node Version: v4.5.0
+[debug] Time:         Tue Sep 13 2016 20:24:11 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Jae Joon\Documents\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\nodejs\node.exe C:\Users\Jae Joon\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     win32
+[debug] Node Version: v4.5.0
+[debug] Time:         Tue Sep 13 2016 20:38:37 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Jae Joon\Documents\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\nodejs\node.exe C:\Users\Jae Joon\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     win32
+[debug] Node Version: v4.5.0
+[debug] Time:         Tue Sep 13 2016 20:40:23 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Jae Joon\Documents\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\nodejs\node.exe C:\Users\Jae Joon\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     win32
+[debug] Node Version: v4.5.0
+[debug] Time:         Tue Sep 13 2016 23:07:13 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Jae Joon\Documents\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\nodejs\node.exe C:\Users\Jae Joon\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     win32
+[debug] Node Version: v4.5.0
+[debug] Time:         Tue Sep 13 2016 23:07:23 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Jae Joon\Documents\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
