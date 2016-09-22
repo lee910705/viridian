@@ -3,82 +3,168 @@
 
   var app = angular.module('myApp.calendar', ['ngRoute', 'firebase.utils', 'firebase']);
 
-  app.controller('CalendarCtrl', ['$scope', function ($scope) {
+  app.controller('CalendarCtrl', ['$scope', '$firebaseObject', function ($scope, $firebaseObject) {
+
       $scope.jsonHeatMap = {};
       $scope.getData = function () {
           var objectHeatMap = [];
-          // Get a database reference to our posts
           var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
           // Attach an asynchronous callback to read the data at our posts reference
+          var snapshot = $firebaseObject(ref);
+          /**obj.$loaded().then(function () {
+              console.log("loaded record:", obj.$id);
+          });
+          **/
+          ref.$bindTo($scope, "data");
+          /**$scope.data = snapshot;
+          snapshot.$bindTo($scope, "data").then(function () {
+              console.log("Snapshot taken");
+              console.log(snapshot);
+          });
+          **/
           ref.on("value", function (snapshot) {
-              angular.forEach(snapshot.val(), function(value){
-                  var date = $scope.createDate(value["startDate"]);
-                  var maxROOT = $scope.getMax(value["ROOT"]);
+              angular.forEach(snapshot.val(), function (entry) {
+                  console.log(entry);
+                  var date = $scope.createDate(entry["startDate"]);
+                  console.log(date);
+                  var maxROOT = $scope.getMax(entry["ROOT"]);
+                  var maxVEG = $scope.getMax(entry["VEG"]);
+                  var maxFLOWER = $scope.getMax(entry["FLOWER"]);
+                  var maxTRIM = $scope.getMax(entry["TRIM"]);
+
+                  var objROOT = entry["ROOT"];
+
                   for (var i = 0; i < maxROOT; i++) {
                       var tempObj = {};
                       tempObj["date"] = new Date(date);
                       tempObj["phase"] = "ROOT"
+                      if (entry.hasOwnProperty("ROOT")) {
+                          if ($scope.dayExists(entry["ROOT"], i + 1)) {
+                              tempObj["hours"] = $scope.getDay(entry["ROOT"], i + 1);
+                              tempObj["task"] = $scope.getTask(entry["ROOT"], i + 1);
+                          } else {
+                              tempObj["hours"] = null;
+                              tempObj["task"] = null;
+                          }
+                      }
                       objectHeatMap.push(tempObj);
-                      date.setDate(date.getDate() + 1);
+                      console.log(date);
+                      date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
+                      
                   }
-
-                  var maxVEG = $scope.getMax(value["VEG"]);
 
                   for (var i = 0; i < maxVEG; i++) {
                       var tempObj = {};
                       tempObj["date"] = new Date(date);
                       tempObj["phase"] = "VEG"
+                      if (entry.hasOwnProperty("VEG")) {
+                          if (entry.hasOwnProperty("VEG")) {
+                              if ($scope.dayExists(entry["VEG"], i + 1)) {
+                                  tempObj["hours"] = $scope.getDay(entry["VEG"], i + 1);
+                                  tempObj["task"] = $scope.getTask(entry["VEG"], i + 1);
+                              } else {
+                                  tempObj["hours"] = null;
+                                  tempObj["task"] = null;
+                              }
+                          }
+                      }
                       objectHeatMap.push(tempObj);
-                      date.setDate(date.getDate() + 1);
+                      console.log(date);
+                      date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
-
-                  var maxFLOWER = $scope.getMax(value["FLOWER"]);
 
                   for (var i = 0; i < maxFLOWER; i++) {
                       var tempObj = {};
                       tempObj["date"] = new Date(date);
                       tempObj["phase"] = "FLOWER"
+                      if (entry.hasOwnProperty("FLOWER")) {
+                          if (entry.hasOwnProperty("FLOWER")) {
+                              if ($scope.dayExists(entry["FLOWER"], i + 1)) {
+                                  tempObj["hours"] = $scope.getDay(entry["FLOWER"], i + 1);
+                                  tempObj["task"] = $scope.getTask(entry["FLOWER"], i + 1);
+                              } else {
+                                  tempObj["hours"] = null;
+                                  tempObj["task"] = null;
+                              }
+                          }
+                      }
+
                       objectHeatMap.push(tempObj);
                       console.log(date);
-                      date.setDate(date.getDate() + 1);
+                      date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
-
-                  var maxTRIM = $scope.getMax(value["TRIM"]);
 
                   for (var i = 0; i < maxTRIM; i++) {
                       var tempObj = {};
                       tempObj["date"] = new Date(date);
                       tempObj["phase"] = "TRIM"
+                      if (entry.hasOwnProperty("TRIM")) {
+                          if (entry.hasOwnProperty("TRIM")) {
+                              if ($scope.dayExists(entry["TRIM"], i + 1)) {
+                                  tempObj["hours"] = $scope.getDay(entry["TRIM"], i + 1);
+                                  tempObj["task"] = $scope.getTask(entry["TRIM"], i + 1);
+                              } else {
+                                  tempObj["hours"] = null;
+                                  tempObj["task"] = null;
+                              }
+                          }
+                      }
+
                       objectHeatMap.push(tempObj);
-                      date.setDate(date.getDate() + 1);
+                      console.log(date);
+
+                      date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
+                         
               });
              
               //$scope.jsonHeatMap = angular.toJson(objectHeatMap);
               $scope.jsonHeatMap = objectHeatMap;
+              console.log($scope.jsonHeatMap);
               $scope.showHeatMap();
 
           }, function (errorObject) {
               console.log("The read failed: " + errorObject.code);
           });
       }
-      console.log("hi");
+
       $scope.createDate = function (str) {
           var day = parseInt(str.slice(0, 2));
           var month = parseInt(str.slice(3, 5));
           var year = parseInt(str.slice(6, 10));
-          var date = new Date(year, month, day);
+          console.log(day, month, year);
+          var date = new Date(year, month-1, day);
+          console.log(date);
           return date;
       }
 
       $scope.getMax = function (obj) {
           var max = 0;
-          angular.forEach(obj, function (value, key) {
-              if (parseInt(key) > max) {
-                  max = parseInt(key);
+          angular.forEach(obj, function (value) {
+              if (parseInt(value["day"]) > max) {
+                  max = parseInt(value["day"]);
               }
           });
           return max;
+      }
+
+      $scope.dayExists = function (objArray, day) {
+          for (var i = 0; i < objArray.length; i++) {
+              if (objArray[i]["day"] == day) return true;
+          }
+          return false;
+      }
+
+      $scope.getDay = function(objArray, day){
+          for(var i = 0; i < objArray.length; i++){
+              if(objArray[i]["day"] == day) return objArray[i]["day"];
+          }
+      }
+      
+      $scope.getTask = function(objArray, day){
+          for(var i = 0; i < objArray.length; i++){
+              if(objArray[i]["day"] == day) return objArray[i]["task"];
+          }
       }
 
       $scope.showHeatMap = function () {
@@ -145,7 +231,7 @@
               .key(function (d) {
                   var currentDate = new Date(d.date);
                   var day = ('0' + currentDate.getDate()).slice(-2);
-                  var month = ('0'+currentDate.getMonth()).slice(-2);
+                  var month = ('0'+(parseInt(currentDate.getMonth())+1)).slice(-2);
                   var year = currentDate.getFullYear();
                   var dateString = year + '-' + month + '-' + day;
           
@@ -163,7 +249,7 @@
               //.sortKeys(d3.ascending)
               //.rollup(function (d) { return (d[0].Close - d[0].Open) / d[0].Open; })
               .map(json);
-          console.log(data);
+          //console.log(data);
          
 
           rect.filter(function (d) { return d in data; })
@@ -193,14 +279,12 @@
           }
       }
       
-
-
       var init = function () {
           $scope.getData();
       }
       init();
     }]);
-
+    
   app.factory('calendarList', ['fbutil', '$firebaseArray', function(fbutil, $firebaseArray) {
     
   }]);

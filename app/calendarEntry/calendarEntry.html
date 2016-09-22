@@ -23,19 +23,21 @@
         <!--<input placeholder="Phase" ng-model="phase" >-->
         
         <input placeholder="Day" ng-model="day">
+        <input placeholder="Hours" ng-model="hours">
         <input placeholder="Task" ng-model="task">
-        <button type="submit" ng-click="addTask(currentPhase, day, task);showTask(currentPhase);day = null; task = null;">Add task</button>
+        <button type="submit" ng-click="addTask(currentPhase, day, hours, task);showTask(currentPhase);day = null; hours = null; task = null;">Add task</button>
     </form>
 
     <table class="table" id="tasks" ng-show="tasks">
         <thead>
             <tr>
                 <th>Day</th>
+                <th>Hours</th>
                 <th>Task</th>
             </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="(day,task) in tasks"><td>{{day}}</td>  <td>{{task}}</td></tr>
+        <tr ng-repeat="entry in program[currentPhase] | orderBy: 'day'"><td>{{entry['day']}}</td> <td>{{entry['hours']}}</td> <td>{{entry['task']}}</td></tr>
     </table>
 
     <button type="submit" ng-click="addStartDate(startDate);addProgram();showTask('ROOT');startDate = null;">Add program</button>

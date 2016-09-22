@@ -3,16 +3,11 @@
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
     'myApp.config',
-    //'myApp.security',
-    //'myApp.home',
-    //'myApp.account',
-    //'myApp.chat',
-    //'myApp.login',
     'myApp.dashboard',
     'myApp.runoff',
     'myApp.calendar',
     'myApp.calendarEntry'
-  ])
+])
   
   .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.otherwise({

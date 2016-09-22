@@ -10,10 +10,10 @@
         $scope.tasks = [];
         $scope.program = {
             startDate: "",
-            ROOT: {},
-            VEG: {},
-            FLOWER: {},
-            TRIM: {}
+            ROOT: [],
+            VEG: [],
+            FLOWER: [],
+            TRIM: []
         }
         $scope.orig = $scope.program;
 
@@ -22,14 +22,16 @@
             $scope.showTask($scope.currentPhase);
         }
 
-        $scope.addTask = function (currentPhase, newDay, newTask) {
+        $scope.addTask = function (currentPhase, newDay, newHours, newTask) {
             //Firebase will treat some of the objects as array if more than half of the keys 
             // between 0 and the maximum key in the object have non-empty values
             // need to fix this later!!!!
-            $scope.program[currentPhase][newDay] = newTask;
+            var tmpTask = {"day": parseInt(newDay), "hours": parseInt(newHours), "task": newTask};
+            //console.log(typeof tmpTask['day']);
+            $scope.program[currentPhase].push(tmpTask);
         }
         
-        $scope.toArray = function(object){
+       /** $scope.toArray = function(object){
             var array = [];
             for (var key in object) {
                 array.push(object[key]);
@@ -41,10 +43,11 @@
                 return a - b;
             });
             return array;
-        }
+        }**/
 
         $scope.showTask = function (currentPhase) {
-            $scope.tasks = $scope.toArray($scope.program[currentPhase]);
+            console.log($scope.program[currentPhase]);
+            $scope.tasks = $scope.program[currentPhase];
         }
 
         $scope.addStartDate = function (date) {
@@ -61,15 +64,16 @@
             console.log($scope.program);
             var ref = new Firebase("https://viridian-49902.firebaseio.com");
             var cEntries = ref.child("calendarEntries");
-            cEntries.push($scope.program);
-            console.log($scope.program);
+            var data = angular.copy($scope.program);
+            cEntries.push(data);
+            console.log(data);
             //$scope.calendarEntries.$add($scope.program);
             $scope.program = {
                 startDate: "",
-                ROOT: {},
-                VEG: {},
-                FLOWER: {},
-                TRIM: {}
+                ROOT: [],
+                VEG: [],
+                FLOWER: [],
+                TRIM: []
             }
             $scope.currentPhase = "ROOT";
             $scope.tasks = [];
