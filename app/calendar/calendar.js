@@ -180,11 +180,11 @@
           }
       }
 
-      $scope.showHeatMap = function () {
+     /*$scope.showHeatMap = function () {
           var margin = { top: 5.5, right: 0, bottom: 5.5, left: 19.5 },
-          width = 960 - margin.left - margin.right,
-          height = 130 - margin.top - margin.bottom,
-          size = height / 7;
+              width = 960 - margin.left - margin.right,
+              height = 130 - margin.top - margin.bottom,
+              size = height / 7;
 
           var day = function (d) { return (d.getDay() + 6) % 7; }, // monday = 0
               week = d3.time.format("%W"), // monday-based week number
@@ -235,7 +235,7 @@
               .attr("d", monthPath);
 
           var json = $scope.jsonHeatMap;
-          
+
           var data = d3.nest()
               .key(function (d) {
                   var currentDate = new Date(d.date);
@@ -243,7 +243,7 @@
                   var month = ('0'+(parseInt(currentDate.getMonth())+1)).slice(-2);
                   var year = currentDate.getFullYear();
                   var dateString = year + '-' + month + '-' + day;
-          
+
                   return dateString;
               })
               .sortKeys(d3.ascending)
@@ -254,7 +254,7 @@
               })
               .map(json);
 
-         
+
 
           rect.filter(function (d) { return d in data; })
               .style('fill', function (d) {
@@ -265,7 +265,7 @@
                   if (phase === "TRIM") { return '#66b2ff'; }
               })
               .select("title")
-                .text(function (d) { return d + ": " + percent(data[d]); });
+              .text(function (d) { return d + ": " + percent(data[d]); });
 
           function monthPath(t0) {
               var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
@@ -277,7 +277,7 @@
                   + "H" + (w1 + 1) * size + "V" + 0
                   + "H" + (w0 + 1) * size + "Z";
           }
-      }
+      }*/
       
       var init = function () {
           $scope.getData();
