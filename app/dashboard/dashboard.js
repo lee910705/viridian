@@ -343,8 +343,6 @@
           .nodePadding(10)
           .size([sankeyWidth, sankeyHeight]);
 
-      var curvyPath = $scope.sankeyTime.link();
-
   // infer links from nodes
       var links = [],
           nodesLength = nodes.length,
@@ -373,7 +371,14 @@
       node.append('g')
           .attr({
               'class': 'node',
-              'transform': function(d){ return 'translate(' + d.x + ', ' + d.y + ')'}
+              'transform': function(d,i){
+                  var yInterpolator = d3.interpolateNumber(svgPadding, (svgHeight - (d3.max(nodes, function(d){return d.dy;})))),
+                      y = yInterpolator(i / nodes.length);
+
+                  d.x += svgPadding;
+                  d.y = y;
+                  return 'translate(' + d.x + ', ' + d.y + ')';
+              }
           })
           .call(d3.behavior.drag())
           .append("rect")
@@ -384,22 +389,58 @@
           })
           .style("stroke", function(d) {
               return d3.rgb(d.color).darker(2);
-          })
-          .append("title")
-          .text(function(d) {
-              return d.name + "\n" + format(d.value);
           });
 
-      node.append("text")
-          .attr("x", -6)
-          .attr("y", function(d) { return d.dy / 2; })
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .attr("transform", null)
-          .text(function(d) { return d.name; })
-          .filter(function(d) { return d.x < width / 2; })
-          .attr("x", 6 + $scope.sankeyTime.nodeWidth())
-          .attr("text-anchor", "start");
+      d3.selectAll('.node').append("text")
+          .attr({
+              'x': 0,
+              'y': function(d){return d.dy / 2;},
+              'dy': '0.35em',
+              'font-family': 'Roboto',
+              'font-size': '1.4em',
+          })
+          .text(function(d) { return d.phase; });
+
+      var link = d3.select('#dashboardSvg').selectAll(".link")
+          .data(links).enter()
+          .append("path")
+          .attr("d", function(d){
+              console.log(d);
+
+              var x0 = d.source.x + d.source.dx,                    // top right x of source
+                  y0 = d.source.y,                                  // top right y of source
+                  x1 = d.source.x + d.source.dx,                    // bottom right x of source
+                  y1 = d.source.y + d.source.dy,                    // bottom right y of source
+                  x2 = d.target.x,                                  // top left x of target
+                  y2 = d.target.y,                                  // top left y of target
+                  x3 = d.target.x,                                  // bottom left x of target
+                  y3 = d.target.y + d.target.dy,                    // bottom left y of target
+                  interpolateX = d3.interpolateNumber(x0, x2),
+                  interpolateY = d3.interpolateNumber(y0 + (d.source.height / 2), y2 + (d.target.height / 2)),
+                  curvature = 0.25,
+                  x4 = interpolateX(curvature),
+                  x5 = interpolateX(1 - curvature),
+                  y4 = interpolateY(curvature),
+                  y5 = interpolateY(curvature - 1);
+
+
+              /* jshint ignore:start */
+              return "M" + x0 + ',' + y0 + ' '    // move to top left
+                  + ' C' + x4 + ',' + y0          // declare curve ctrl 1 25% to the right at source y
+                  + ' ' + x5 + ',' + y2           // curve control point 2 75% right height at target y
+                  + ' ' + x2 + ',' + y2 + ' '     // end curve at top right
+                  + ' L' + x2 + ',' + y3 + ' '    // line to bottom right straight down
+                  + ' C' + x5 + ',' + y3          // declare curve, ctrl 1 25% to left at target bottom
+                  + ' ' + x4 + ',' + y1           // control point 2 75% left at source bottom
+                  + ' ' + x0 + ',' + y1           // end curve at bottom left
+                  + ' Z';                         // close shape
+              /* jshint ignore:end */
+          })
+          .style({
+              'fill': function(d,i){return color(i);},
+              'fill-opacity': 0.4
+          })
+          .sort(function(a, b) { return b.dy - a.dy; })
 
     }]);
 
