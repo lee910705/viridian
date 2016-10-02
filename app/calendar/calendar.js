@@ -1,9 +1,9 @@
 (function (angular) {
-  "use strict";
+    "use strict";
 
-  var app = angular.module('myApp.calendar', ['ngRoute', 'firebase.utils', 'firebase']);
-
-  app.controller('CalendarCtrl', ['$scope', '$firebaseObject', function ($scope, $firebaseObject) {
+    var app = angular.module('myApp.calendar', ['ngRoute', 'firebase.utils', 'firebase']);
+    /**
+     app.controller('CalendarCtrl', ['$scope', '$firebaseObject', function ($scope, $firebaseObject) {
 
       $scope.jsonHeatMap = {};
       $scope.getData = function () {
@@ -11,37 +11,26 @@
           var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
           // Attach an asynchronous callback to read the data at our posts reference
           var snapshot = $firebaseObject(ref);
-          /**obj.$loaded().then(function () {
-              console.log("loaded record:", obj.$id);
-          });
-          **/
-          //ref.$bindTo($scope, "data");
-          /**$scope.data = snapshot;
-          snapshot.$bindTo($scope, "data").then(function () {
-              console.log("Snapshot taken");
-              console.log(snapshot);
-          });
-          **/
 
 
 
-           /*
-           suggestion:
-           require $q, then 1
-           var obj = ref.$loaded();
+           //suggestion:
+           //require $q, then 1
+           //var obj = ref.$loaded();
 
-           var arrayOfStuffINeed = [];
-           var defer = $q.defer;
+           //var arrayOfStuffINeed = [];
+           //var defer = $q.defer;
 
-           for (key in obj){
-           arrayOfStuffINeed.push(obj.key);
-           defer.resolve(arrayOfStuffINeed)
-           };
+           //for (key in obj){
+           //arrayOfStuffINeed.push(obj.key);
+           //defer.resolve(arrayOfStuffINeed)
+           //};
 
-           $q.all(arrayOfStuffINeed).then(function(dataIJustGot){
+           //$q.all(arrayOfStuffINeed).then(function(dataIJustGot){
 
-           })
-           */
+           //})
+
+
 
 
           ref.on("value", function (snapshot) {
@@ -143,6 +132,7 @@
           });
       }
 
+
       $scope.createDate = function (str) {
           var day = parseInt(str.slice(0, 2));
           var month = parseInt(str.slice(3, 5));
@@ -180,7 +170,8 @@
           }
       }
 
-     /*$scope.showHeatMap = function () {
+     $scope.showHeatMap = function () {
+
           var margin = { top: 5.5, right: 0, bottom: 5.5, left: 19.5 },
               width = 960 - margin.left - margin.right,
               height = 130 - margin.top - margin.bottom,
@@ -204,7 +195,7 @@
           var svg = d3.select("body").selectAll("svg")
               .data(d3.range(2016, 2017))
               .enter().append("svg")
-              .attr("class", "RdYlGn")
+              .attr("class", "heatMap")
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
               .append("g")
@@ -255,7 +246,7 @@
               .map(json);
 
 
-
+         console.log("printing something...");
           rect.filter(function (d) { return d in data; })
               .style('fill', function (d) {
                   var phase = data[d]["phase"];
@@ -277,23 +268,27 @@
                   + "H" + (w1 + 1) * size + "V" + 0
                   + "H" + (w0 + 1) * size + "Z";
           }
-      }*/
-      
+      }
+
       var init = function () {
           $scope.getData();
+          d3.select('')
       }
       init();
-    }]);
-    
-  app.factory('calendarList', ['fbutil', '$firebaseArray', function(fbutil, $firebaseArray) {
-    
-  }]);
 
-  app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/calendar', {
-      templateUrl: 'calendar/calendar.html',
-      controller: 'CalendarCtrl'
-    });
-  }]);
+  }]);**/
+    app.controller('CalendarCtrl', ['$scope', '$firebaseObject', function ($scope, $firebaseObject) {
+    }]);
+
+    app.factory('calendarList', ['fbutil', '$firebaseArray', function (fbutil, $firebaseArray) {
+
+    }]);
+
+    app.config(['$routeProvider', function ($routeProvider) {
+        $routeProvider.when('/calendar', {
+            templateUrl: 'calendar/calendar.html',
+            controller: 'CalendarCtrl'
+        });
+    }]);
 
 })(angular);
