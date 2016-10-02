@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="09f31032-ad1d-4bba-b48e-ae060052c171" name="Default" comment="" />
+=======
     <list default="true" id="09f31032-ad1d-4bba-b48e-ae060052c171" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/dashboard/dashboard.js" afterPath="$PROJECT_DIR$/app/dashboard/dashboard.js" />
     </list>
+>>>>>>> origin/master
     <ignored path="viridian.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -46,6 +50,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="firebase-debug.log" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/firebase-debug.log">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="json.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/calendar/json.json">
           <provider selected="true" editor-type-id="text-editor">
@@ -69,6 +83,7 @@
       <file leaf-file-name="dashboard.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/dashboard/dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="393">
               <caret line="552" column="0" selection-start-line="552" selection-start-column="0" selection-end-line="552" selection-end-column="0" />
               <folding>
@@ -108,15 +123,33 @@
                 <element signature="e#18503#18528#0" expanded="false" />
                 <element signature="e#19286#19309#0" expanded="false" />
               </folding>
+=======
+<<<<<<< HEAD
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+>>>>>>> ec14553689e79a02675fc0e88b517b285933949b
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="18">
               <caret line="23" column="105" selection-start-line="23" selection-start-column="105" selection-end-line="23" selection-end-column="105" />
+=======
+      <file leaf-file-name="dashboard.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/dashboard/dashboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+=======
+            <state relative-caret-position="282">
+              <caret line="367" column="17" selection-start-line="367" selection-start-column="17" selection-end-line="367" selection-end-column="17" />
+>>>>>>> origin/master
+>>>>>>> ec14553689e79a02675fc0e88b517b285933949b
               <folding />
             </state>
           </provider>
@@ -278,13 +311,29 @@
       <updated>1475188697534</updated>
       <workItem from="1475188698676" duration="6035000" />
       <workItem from="1475265935277" duration="618000" />
+<<<<<<< HEAD
+      <workItem from="1475427590116" duration="1272000" />
+=======
       <workItem from="1475427590116" duration="670000" />
+<<<<<<< HEAD
       <workItem from="1475429207279" duration="11392000" />
+=======
+      <workItem from="1475429207279" duration="101000" />
+>>>>>>> origin/master
+>>>>>>> ec14553689e79a02675fc0e88b517b285933949b
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="18715000" />
+=======
+<<<<<<< HEAD
+    <option name="totallyTimeSpent" value="7925000" />
+=======
+    <option name="totallyTimeSpent" value="7424000" />
+>>>>>>> origin/master
+>>>>>>> ec14553689e79a02675fc0e88b517b285933949b
   </component>
   <component name="ToolWindowManager">
     <frame x="320" y="0" width="1048" height="775" extended-state="0" />
@@ -748,6 +797,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-65">
           <caret line="13" column="45" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/firebase-debug.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
