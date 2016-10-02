@@ -302,8 +302,8 @@
       var svgPadding = 25,
           svgWidth = d3.max([window.innerWidth,1024]),       // target tablet resolution
           svgHeight = d3.max([window.innerHeight,768]),
-          sankeyHeight = svgHeight * 2 / 3,
-          sankeyWidth = svgWidth * 3 / 5;
+          sankeyHeight = svgHeight / 1.4,
+          sankeyWidth = svgWidth / 1.4;
 
       // dummy data
       var nodes = [
@@ -313,21 +313,26 @@
           },
           {
               "phase" : "VEG",
-              "value" : 45
+              "value" : 32
           },
           {
               "phase" : "FLOWER",
-              "value" : 60
+              "value" : 11
           },
           {
               "phase" : "TAKEDOWN",
               "value" : 25
           },
           {
-              "phase" : "PROCESSING & INVENTORY",
-              "value": 60
+              "phase" : "PROCESSING",
+              "value": 54
           }
       ];
+
+      // TODO write to firebase
+      $scope.updatePhase = function(phase, value){
+          console.log('Update phase: ' + phase + ' with new value ' + value);
+      };
 
   // get the svg going
       $scope.dashboardSvg = d3.select('body').append('svg')
@@ -337,9 +342,23 @@
             'id': 'dashboardSvg'
         });
 
+      d3.select('#dashboardSvg')
+          .append('text')
+          .attr({
+              'x': svgPadding,
+              'y': svgPadding + 40
+          })
+          .style({
+              'font-size': 40,
+              'font-family': 'Roboto',
+              'font-weight': 600,
+              'fill': 'rgba(0,0,0,0.8)'
+          })
+          .text('Overall system status');
+
   // get the party started
       $scope.sankeyTime = d3.sankey()
-          .nodeWidth(36)
+          .nodeWidth(72)
           .nodePadding(10)
           .size([sankeyWidth, sankeyHeight]);
 
@@ -372,79 +391,168 @@
           .attr({
               'class': 'node',
               'transform': function(d,i){
-                  var yInterpolator = d3.interpolateNumber(svgPadding, (svgHeight - (d3.max(nodes, function(d){return d.dy;})))),
-                      y = yInterpolator(i / nodes.length);
+                  // sankey automatically adjusts to fill up svg - so we adjust heights and y by increment, here 1.6
+                  var tallestNode = d3.max(nodes, function(d){return d.dy / 1.6}),
+                      yInterpolator = d3.interpolateNumber(0, sankeyHeight - tallestNode),
+                      y = 0;
+                  if (i <= nodes.length / 2) {
+                      y = yInterpolator(i / nodes.length) + (svgPadding * 2);
+                  } else {
+                      y = yInterpolator((nodes.length - i) / nodes.length) + (svgPadding * 2);
+                  }
 
                   d.x += svgPadding;
-                  d.y = y;
+                  d.y = y + svgPadding;
                   return 'translate(' + d.x + ', ' + d.y + ')';
-              }
+              },
+              'id': function(d){return d.phase;}
+          })
+          .on('click', function(d,i){
+              d3.select(this).append('foreignObject')
+                  .attr({
+                      'x': svgPadding / 4,
+                      'y': svgPadding * 3,
+                      'height': svgPadding * 1.1,
+                      'width': function(d){return d.dx;},
+                      'id': function(d){return d.phase + 'ForeignObject';}
+                  })
+                  .append('xhtml:div')
+                  .html(function(d){
+                      return '<input id=\'' + d.phase + 'Input\'><\/input>';
+                  });
+
+              d3.select(this).selectAll('input')
+                  .style({
+                      'background-color': 'rgba(0,0,0,0)',
+                      'height': svgPadding * 1.05,
+                      'font-size': svgPadding,
+                      'font-weight': '500',
+                      'width': '62px',
+                      'border-style': 'none',
+                      'padding': '0px 0px 0px 0px',
+                      'margin': '0px 0px 0px 0px',
+                      '-webkit-appearance': 'none',
+                      'border-bottom': '1px solid black',
+                  })
+                  .on('keydown', function () {
+
+                      if (d3.event.keyCode === 13) {
+                          var newValue = document.getElementById(d3.event.srcElement.id).value,
+                              parentGroupElementForThisInput = d3.event.path[3].id; // e.g. the <g> '#ROOT'
+                          $scope.updatePhase(parentGroupElementForThisInput, newValue);
+                          d3.select(this).remove();
+                      }
+
+                      if (d3.event.keyCode === 27) {
+                          d3.select(this).remove();
+                      }
+
+                      if (d3.event.keyCode === 9) {
+                          d3.select(this).remove();
+                      }
+
+                  })
+                  .on('blur', function () {
+                      var parentGroup = d3.event.path[3].id; // e.g. the <g> '#ROOT'
+                      console.log(parentGroup);
+
+                      if (d3.event.keyCode !== 13 || d3.event.keyCode !== 27 || d3.event.keyCode !== 9){
+
+                          if (!(d3.select('#' + parentGroup + 'ForeignObject').empty())){
+                              d3.selectAll('#' + parentGroup + 'ForeignObject').remove()
+                          };
+
+                      }
+                  });
+
           })
           .call(d3.behavior.drag())
           .append("rect")
-          .attr("height", function(d) { return d.dy; })
+          .attr("height", function(d) {
+              var newHeight = d.dy / 1.6; // magic number 1.6 again
+              d.dy = newHeight;
+              return d.dy;
+          })
           .attr("width", $scope.sankeyTime.nodeWidth())
           .style("fill", function(d,i) {
               return d.color = color(i);
-          })
-          .style("stroke", function(d) {
-              return d3.rgb(d.color).darker(2);
           });
+
 
       d3.selectAll('.node').append("text")
           .attr({
-              'x': 0,
-              'y': function(d){return d.dy / 2;},
-              'dy': '0.35em',
+              'x': svgPadding / 4,
+              'y': svgPadding,
               'font-family': 'Roboto',
-              'font-size': '1.4em',
+              'font-size': svgPadding,
+              'fill-opacity': 0.4,
+              'font-weight': 600,
+              'class': 'phaseLabel'
           })
           .text(function(d) { return d.phase; });
+
+      d3.selectAll('.node').append("text")
+          .attr({
+              'x': svgPadding / 4,
+              'y': svgPadding * 1.7,
+              'dy': 12,
+              'font-family': 'Roboto',
+              'font-size': svgPadding / 1.6,
+              'fill-opacity': 0.4,
+              'font-weight': 600,
+              'class': 'phaseValue'
+          })
+          .text(function(d) { return d.value + ' PLANTS'; });
+
+      function generateLines(d){
+          console.log(d);
+
+          var x0 = d.source.x + d.source.dx,                    // top right x of source
+              y0 = d.source.y,                                  // top right y of source
+              x1 = d.source.x + d.source.dx,                    // bottom right x of source
+              y1 = d.source.y + d.source.dy,                    // bottom right y of source
+              x2 = d.target.x,                                  // top left x of target
+              y2 = d.target.y,                                  // top left y of target
+              x3 = d.target.x,                                  // bottom left x of target
+              y3 = d.target.y + d.target.dy,                    // bottom left y of target
+              interpolateX = d3.interpolateNumber(x0, x2),
+              interpolateY = d3.interpolateNumber(y0 + (d.source.height / 2), y2 + (d.target.height / 2)),
+              curvature = 0.25,
+              x4 = interpolateX(curvature),
+              x5 = interpolateX(1 - curvature),
+              y4 = interpolateY(curvature),
+              y5 = interpolateY(curvature - 1);
+
+
+          /* jshint ignore:start */
+          return "M" + x0 + ',' + y0 + ' '    // move to top left
+              + ' C' + x4 + ',' + y0          // declare curve ctrl 1 25% to the right at source y
+              + ' ' + x5 + ',' + y2           // curve control point 2 75% right height at target y
+              + ' ' + x2 + ',' + y2 + ' '     // end curve at top right
+              + ' L' + x2 + ',' + y3 + ' '    // line to bottom right straight down
+              + ' C' + x5 + ',' + y3          // declare curve, ctrl 1 25% to left at target bottom
+              + ' ' + x4 + ',' + y1           // control point 2 75% left at source bottom
+              + ' ' + x0 + ',' + y1           // end curve at bottom left
+              + ' Z';                         // close shape
+          /* jshint ignore:end */
+      }
 
       var link = d3.select('#dashboardSvg').selectAll(".link")
           .data(links).enter()
           .append("path")
           .attr("d", function(d){
-              console.log(d);
-
-              var x0 = d.source.x + d.source.dx,                    // top right x of source
-                  y0 = d.source.y,                                  // top right y of source
-                  x1 = d.source.x + d.source.dx,                    // bottom right x of source
-                  y1 = d.source.y + d.source.dy,                    // bottom right y of source
-                  x2 = d.target.x,                                  // top left x of target
-                  y2 = d.target.y,                                  // top left y of target
-                  x3 = d.target.x,                                  // bottom left x of target
-                  y3 = d.target.y + d.target.dy,                    // bottom left y of target
-                  interpolateX = d3.interpolateNumber(x0, x2),
-                  interpolateY = d3.interpolateNumber(y0 + (d.source.height / 2), y2 + (d.target.height / 2)),
-                  curvature = 0.25,
-                  x4 = interpolateX(curvature),
-                  x5 = interpolateX(1 - curvature),
-                  y4 = interpolateY(curvature),
-                  y5 = interpolateY(curvature - 1);
-
-
-              /* jshint ignore:start */
-              return "M" + x0 + ',' + y0 + ' '    // move to top left
-                  + ' C' + x4 + ',' + y0          // declare curve ctrl 1 25% to the right at source y
-                  + ' ' + x5 + ',' + y2           // curve control point 2 75% right height at target y
-                  + ' ' + x2 + ',' + y2 + ' '     // end curve at top right
-                  + ' L' + x2 + ',' + y3 + ' '    // line to bottom right straight down
-                  + ' C' + x5 + ',' + y3          // declare curve, ctrl 1 25% to left at target bottom
-                  + ' ' + x4 + ',' + y1           // control point 2 75% left at source bottom
-                  + ' ' + x0 + ',' + y1           // end curve at bottom left
-                  + ' Z';                         // close shape
-              /* jshint ignore:end */
+              return generateLines(d);
           })
           .style({
               'fill': function(d,i){return color(i);},
-              'fill-opacity': 0.4
-          })
-          .sort(function(a, b) { return b.dy - a.dy; })
-
+              'fill-opacity': 0.6
+          });
     }]);
 
-  app.config(['$routeProvider', function($routeProvider) {
+    var ref = new Firebase("https://viridian-49902.firebaseio.com/calendarEntries");
+
+
+    app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/dashboard', {
       templateUrl: 'dashboard/dashboard.html',
       controller: 'DashboardCtrl'
