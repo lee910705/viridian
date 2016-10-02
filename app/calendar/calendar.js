@@ -15,7 +15,7 @@
               console.log("loaded record:", obj.$id);
           });
           **/
-          ref.$bindTo($scope, "data");
+          //ref.$bindTo($scope, "data");
           /**$scope.data = snapshot;
           snapshot.$bindTo($scope, "data").then(function () {
               console.log("Snapshot taken");
@@ -24,9 +24,7 @@
           **/
           ref.on("value", function (snapshot) {
               angular.forEach(snapshot.val(), function (entry) {
-                  console.log(entry);
                   var date = $scope.createDate(entry["startDate"]);
-                  console.log(date);
                   var maxROOT = $scope.getMax(entry["ROOT"]);
                   var maxVEG = $scope.getMax(entry["VEG"]);
                   var maxFLOWER = $scope.getMax(entry["FLOWER"]);
@@ -48,7 +46,6 @@
                           }
                       }
                       objectHeatMap.push(tempObj);
-                      console.log(date);
                       date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                       
                   }
@@ -69,7 +66,6 @@
                           }
                       }
                       objectHeatMap.push(tempObj);
-                      console.log(date);
                       date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
 
@@ -90,7 +86,6 @@
                       }
 
                       objectHeatMap.push(tempObj);
-                      console.log(date);
                       date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
 
@@ -111,7 +106,6 @@
                       }
 
                       objectHeatMap.push(tempObj);
-                      console.log(date);
 
                       date.setTime(date.getTime() + (24 * 60 * 60 * 1000));
                   }
@@ -120,7 +114,6 @@
              
               //$scope.jsonHeatMap = angular.toJson(objectHeatMap);
               $scope.jsonHeatMap = objectHeatMap;
-              console.log($scope.jsonHeatMap);
               $scope.showHeatMap();
 
           }, function (errorObject) {
@@ -132,9 +125,7 @@
           var day = parseInt(str.slice(0, 2));
           var month = parseInt(str.slice(3, 5));
           var year = parseInt(str.slice(6, 10));
-          console.log(day, month, year);
           var date = new Date(year, month-1, day);
-          console.log(date);
           return date;
       }
 
@@ -221,10 +212,6 @@
               .attr("class", "month")
               .attr("d", monthPath);
 
-          
-          //var data = $scope.jsonHeatMap;
-          //var parseDate = d3.time.format('%Y-%m-%d').parse;
-          //d3.json("/app/calendar/json.json", function (json) {
           var json = $scope.jsonHeatMap;
           
           var data = d3.nest()
@@ -243,29 +230,20 @@
                       phase: d[0].phase
                   }
               })
-
-              //.key(function (d) { return d.phase; })
-              //.rollup(function (d) { return d.phase;})
-              //.sortKeys(d3.ascending)
-              //.rollup(function (d) { return (d[0].Close - d[0].Open) / d[0].Open; })
               .map(json);
-          //console.log(data);
+
          
 
           rect.filter(function (d) { return d in data; })
-                //.attr("class", function (d) { console.log(d); return "day " + color(data[d]); })
               .style('fill', function (d) {
-                  //console.log(data[d]["phase"]);
                   var phase = data[d]["phase"];
                   if (phase === "ROOT") { return '#ff0000'; }
                   if (phase === "VEG") { return '#00994c'; }
                   if (phase === "FLOWER") { return '#ffff00'; }
                   if (phase === "TRIM") { return '#66b2ff'; }
               })
-              //.style('fill', '#0000ff')
               .select("title")
                 .text(function (d) { return d + ": " + percent(data[d]); });
-          //});
 
           function monthPath(t0) {
               var t1 = new Date(t0.getFullYear(), t0.getMonth() + 1, 0),
