@@ -22,6 +22,28 @@
               console.log(snapshot);
           });
           **/
+
+
+
+           /*
+           suggestion:
+           require $q, then 1
+           var obj = ref.$loaded();
+
+           var arrayOfStuffINeed = [];
+           var defer = $q.defer;
+
+           for (key in obj){
+           arrayOfStuffINeed.push(obj.key);
+           defer.resolve(arrayOfStuffINeed)
+           };
+
+           $q.all(arrayOfStuffINeed).then(function(dataIJustGot){
+
+           })
+           */
+
+
           ref.on("value", function (snapshot) {
               angular.forEach(snapshot.val(), function (entry) {
                   var date = $scope.createDate(entry["startDate"]);
