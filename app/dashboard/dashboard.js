@@ -347,29 +347,60 @@
 
   // infer links from nodes
       var links = [],
-          nodesLength = nodes.length;
+          nodesLength = nodes.length,
+          color = d3.scale.category20();
 
       for (var i = 0; i < nodesLength - 1; i++){
           links.push({
-              'source': nodes[i].phase,
-              'target': nodes[i+1].phase,
+              'source': i,
+              'sourceName': nodes[i].phase,
+              'target': i + 1,
+              'targetName': nodes[i+1].phase,
               'value': nodes[i].value
           })
       };
+
+      console.log(links);
 
       $scope.sankeyTime
           .nodes(nodes)
           .links(links)
           .layout(32);
 
-      var node = d3.select('#dashboardSvg').append('g').selectAll('.node')
-          .data(nodes)
-          .enter().append('g')
+      var node = d3.select('#dashboardSvg').selectAll('g.node')
+          .data(nodes).enter();
+
+      node.append('g')
           .attr({
               'class': 'node',
               'transform': function(d){ return 'translate(' + d.x + ', ' + d.y + ')'}
           })
           .call(d3.behavior.drag())
+          .append("rect")
+          .attr("height", function(d) { return d.dy; })
+          .attr("width", $scope.sankeyTime.nodeWidth())
+          .style("fill", function(d,i) {
+              return d.color = color(i);
+          })
+          .style("stroke", function(d) {
+              return d3.rgb(d.color).darker(2);
+          })
+          .append("title")
+          .text(function(d) {
+              return d.name + "\n" + format(d.value);
+          });
+
+      node.append("text")
+          .attr("x", -6)
+          .attr("y", function(d) { return d.dy / 2; })
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .attr("transform", null)
+          .text(function(d) { return d.name; })
+          .filter(function(d) { return d.x < width / 2; })
+          .attr("x", 6 + $scope.sankeyTime.nodeWidth())
+          .attr("text-anchor", "start");
+
     }]);
 
   app.config(['$routeProvider', function($routeProvider) {

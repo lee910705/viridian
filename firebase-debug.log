@@ -40,3 +40,17 @@
 [info] Public Directory: app
 [info] 
 [info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      node C:\Users\Joohn\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.0.0
+[debug] Platform:     win32
+[debug] Node Version: v0.12.2
+[debug] Time:         Sun Oct 02 2016 10:36:03 GMT-0700 (Pacific Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Joohn\Documents\GitHub\viridian
+[info] Public Directory: app
+[info] 
+[info] Server listening at: http://localhost:5000
